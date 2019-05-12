@@ -94,19 +94,20 @@ class SnipsConsole:
 				accessToken = self._getAccessToken(token)
 				if len(accessToken) > 0:
 					print('Console token aquired, saving it!')
+					if 'console' not in self._snips:
+						self._snips['console'] = {}
 
-				if 'console' not in self._snips:
-					self._snips['console'] = {}
+					self._snips['console']['console_token'] = accessToken['token']
+					self._snips['console']['console_alias'] = accessToken['alias']
+					self._snips['console']['user_id'] = self._user.userId
+					self._snips['console']['user_email'] = self._user.userEmail
 
-				self._snips['console']['console_token'] = accessToken['token']
-				self._snips['console']['console_alias'] = accessToken['alias']
-				self._snips['console']['user_id'] = self._user.userId
-				self._snips['console']['user_email'] = self._user.userEmail
-
-				self._headers['Authorization'] = 'JWT {}'.format(accessToken['token'])
-				self._saveSnipsConf()
-				self._connected = True
-				self._tries = 0
+					self._headers['Authorization'] = 'JWT {}'.format(accessToken['token'])
+					self._saveSnipsConf()
+					self._connected = True
+					self._tries = 0
+				else:
+					raise Exception('Error getting JWT console token')
 			except Exception as e:
 				print('Exception during console token aquiring: {}'.format(e))
 				self._connected = False
