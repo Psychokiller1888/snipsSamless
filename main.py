@@ -22,14 +22,13 @@ import uuid
 
 
 class SnipsConsole:
-	EMAIL = 'john'
-	PASSWORD = 'doe'
-
 
 	def __init__(self):
 		self._tries = 0
 		self._connected = False
 		self._user = None
+		self._email = ''
+		self._password = ''
 		self._headers = {
 			'Accept'      : 'application/json',
 			'Content-Type': 'application/json'
@@ -54,6 +53,25 @@ class SnipsConsole:
 		else:
 			self._login()
 
+	@property
+	def email(self) -> str:
+		return self._email
+
+
+	@email.setter
+	def email(self, email: str):
+		self._email = email
+
+
+	@property
+	def password(self) -> str:
+		return self._password
+
+
+	@password.setter
+	def password(self, password: str):
+		self._password = password
+
 
 	def _login(self):
 		self._tries += 1
@@ -63,8 +81,8 @@ class SnipsConsole:
 			return
 
 		payload = {
-			'email'   : self.EMAIL,
-			'password': self.PASSWORD
+			'email'   : self.email,
+			'password': self.password
 		}
 
 		req = self._req(url='v1/user/auth', data=payload)
@@ -206,10 +224,14 @@ class User:
 if __name__ == '__main__':
 	running = True
 	console = SnipsConsole()
-	print('Commands: list, nlu status, asr status, nlu training, asr training, download, logout', 'login')
+	print('Commands: email, password, list, nlu status, asr status, nlu training, asr training, download, logout', 'login')
 	while running:
 		cmd = input('Command: ')
-		if cmd == 'list':
+		if cmd == 'email':
+			console.email = input('Enter your snips console account email: ')
+		elif cmd == 'password':
+			console.password = input('Enter your snips console account password: ')
+		elif cmd == 'list':
 			console.listAssistants()
 		elif cmd == 'nlu status':
 			arg = input('Assistant id: ')
