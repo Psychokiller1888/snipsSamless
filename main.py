@@ -224,7 +224,7 @@ class User:
 if __name__ == '__main__':
 	running = True
 	console = SnipsConsole()
-	print('Commands: email, password, list, nlu status, asr status, nlu training, asr training, download, logout', 'login')
+	print('Commands: email, password, login, logout, list, nlu status, asr status, nlu training, asr training, download')
 	while running:
 		cmd = input('Command: ')
 		if cmd == 'email':
